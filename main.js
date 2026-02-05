@@ -69,3 +69,25 @@ addOnClick('copy', function (e) {
 addOnClick('download', function () {
   downloadText(formatFileName(title), body.innerText);
 });
+
+let isSending = false;
+
+document.addEventListener("visibilitychange", function() {
+  if (document.visibilityState === 'hidden' && isSending) {
+    window.close();
+  }
+});
+
+addOnClick('supertonic', function () {
+  let textToSend = body.innerText.trim();
+  if (!textToSend) return;
+
+  isSending = true;
+
+  const encodedText = encodeURIComponent(textToSend);
+  const intentUri = `intent://send?text=${encodedText}#Intent;scheme=supertonic;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;S.android.intent.extra.TEXT=${encodedText};S.browser_fallback_url=https%3A%2F%2Fgithub.com%2F;end`;
+  
+  const link = document.createElement('a');
+  link.href = intentUri;
+  link.click();
+});
