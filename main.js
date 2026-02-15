@@ -36,7 +36,25 @@ let txt = params.get("tx");
 let allText = composeText(title, url, txt);
 let body = document.getElementById('chrome-extension-plain-text-body');
 let infoBox = document.getElementById('info-box');
-body.innerText = allText;
+
+function highlightText(text) {
+    const lines = text.split('\n');
+    // A valid line must end with . ! or ? optionally followed by closing quotes or brackets
+    const validEndingRegex = /[.!?]['"”’\)\]}]*$/;
+    
+    const processedLines = lines.map(line => {
+        const trimmedLine = line.trim();
+        if (trimmedLine.length > 0) {
+            if (!validEndingRegex.test(trimmedLine)) {
+                return `<span class="highlight">${line}</span>`;
+            }
+        }
+        return line;
+    });
+    return processedLines.join('<br>');
+}
+
+body.innerHTML = highlightText(allText);
 let zoomValue = 1;
 
 addOnClick('zoom-in', function () {
@@ -63,11 +81,11 @@ addOnClick('edit', function (e) {
 });
 
 addOnClick('copy', function (e) {
-  navigator.clipboard.writeText(body.innerText)
+  navigator.clipboard.writeText(allText)
 });
 
 addOnClick('download', function () {
-  downloadText(formatFileName(title), body.innerText);
+  downloadText(formatFileName(title), allText);
 });
 
 let isSending = false;
