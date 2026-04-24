@@ -67,25 +67,30 @@ addOnClick('zoom-out', function () {
   body.style.setProperty('zoom', zoomValue);
 });
 
-addOnClick('edit', function (e) {
-  let editLink = e.target
-  if (body.contentEditable.toLowerCase() == 'true') {
-    body.contentEditable = 'false';
-    editLink.classList.remove("pressed")
-    infoBox.style = 'display: none;'
-  } else {
-    body.contentEditable = 'true';
-    editLink.classList.add("pressed")
-    infoBox.style = 'display: initial;'
+addOnClick('delete', function () {
+  const selection = window.getSelection();
+  if (selection.rangeCount > 0) {
+    selection.deleteFromDocument();
   }
 });
 
 addOnClick('copy', function (e) {
-  navigator.clipboard.writeText(allText)
+  navigator.clipboard.writeText(body.innerText)
 });
 
 addOnClick('download', function () {
-  downloadText(formatFileName(title), allText);
+  downloadText(formatFileName(title), body.innerText);
+});
+
+body.addEventListener('click', () => {
+  if (body.contentEditable !== 'true') {
+    body.contentEditable = 'true';
+    body.focus();
+  }
+});
+
+body.addEventListener('blur', () => {
+  body.contentEditable = 'false';
 });
 
 let isSending = false;

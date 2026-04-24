@@ -31,7 +31,7 @@
             right: 0;
         }
         #chrome-extension-plain-text-body {
-            padding: 60px 10px 10px 10px;
+            padding: 60px 10px 50vh 10px;
         }
 
         #chrome-extension-plain-text-header a {
@@ -126,15 +126,15 @@
 <body>
     <div id="chrome-extension-plain-text-header">
         <div id="logo"><img src="ico/btn_circle_text.20x20.png"> Page Plain Text</div>
-        <span id="info-box">Edit-Mode On</span>
+        <span id="info-box" style="display: none;">Edit-Mode On</span>
         <a id="zoom-in" href="#" title="Zoom In" >➕</a>
         <a id="zoom-out" href="#" title="Zoom Out" >➖</a>
         <a id="copy" href="#">Copy</a>
-        <a id="edit" class="pressed" href="#">Edit<span class="edit-status"></span></a>
+        <a id="delete" href="#">Delete</a>
         <a id="download" href="#" >Download</a>
         <a id="supertonic" href="#">Supertonic</a>
     </div>
-    <div id="chrome-extension-plain-text-body" contenteditable="true"></div>
+    <div id="chrome-extension-plain-text-body" contenteditable="false"></div>
     <script type="module" src="main.js"></script>
     <style>
         .highlight {
