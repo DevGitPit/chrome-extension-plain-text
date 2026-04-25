@@ -57,28 +57,36 @@ function highlightText(text) {
 body.innerHTML = highlightText(allText);
 let zoomValue = 1;
 
-addOnClick('zoom-in', function () {
+addOnClick('zoom-in', function (e) {
+  e.preventDefault();
   zoomValue *= 1.1
   body.style.setProperty('zoom', zoomValue);
 });
 
-addOnClick('zoom-out', function () {
+addOnClick('zoom-out', function (e) {
+  e.preventDefault();
   zoomValue *= 0.9
   body.style.setProperty('zoom', zoomValue);
 });
 
-addOnClick('delete', function () {
+addOnClick('delete', function (e) {
+  e.preventDefault();
   const selection = window.getSelection();
   if (selection.rangeCount > 0) {
-    selection.deleteFromDocument();
+    const range = selection.getRangeAt(0);
+    if (body.contains(range.startContainer) && body.contains(range.endContainer)) {
+      selection.deleteFromDocument();
+    }
   }
 });
 
 addOnClick('copy', function (e) {
+  e.preventDefault();
   navigator.clipboard.writeText(body.innerText)
 });
 
-addOnClick('download', function () {
+addOnClick('download', function (e) {
+  e.preventDefault();
   downloadText(formatFileName(title), body.innerText);
 });
 
@@ -101,7 +109,8 @@ document.addEventListener("visibilitychange", function() {
   }
 });
 
-addOnClick('supertonic', function () {
+addOnClick('supertonic', function (e) {
+  e.preventDefault();
   let textToSend = body.innerText.trim();
   if (!textToSend) return;
 
